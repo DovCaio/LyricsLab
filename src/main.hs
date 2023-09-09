@@ -8,7 +8,17 @@ main = do
     --salvaBanda (Banda "Salvo3" ["Eu2","tu2"] ["Eu2"] ["dea2"]  ["violao2"] "12/12/12" "rock2")
     
     --bd <- todasAsBandas
-    
     --print (bd)
+    
     --banda <- recuperarPorNome "Salvo2"
     --print banda
+
+    --bandas <- filtrarBandaInstrumento "1"
+    --print bandas
+
+    --bandas <- filtrarBandasPorGenero "rock"
+    --print bandas
+
+    bandas <- filtrarBandaPorArtista "Jota"
+
+    print bandas
