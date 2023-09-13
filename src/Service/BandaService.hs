@@ -92,3 +92,92 @@ temEsseArtista artista [] = False
 temEsseArtista artista (h : t) = if h == artista then True
     else temEsseArtista artista t
 
+
+--publica
+existeBanda :: String -> IO Bool
+existeBanda nome = do
+    bandas <- todasAsBandas
+    existe nome bandas
+
+
+existe :: String -> [Banda] -> IO Bool
+existe _ [] = return False
+existe nomeBanda (h : t) =
+    if nomeBanda == nome h
+        then return True
+        else existe nomeBanda t
+
+-- publica
+removerBanda :: String -> IO ()
+removerBanda nomeBanda = do 
+    seraExiste <- existeBanda nomeBanda
+    if seraExiste then do
+        bandas <- todasAsBandas
+        let bandas2 = removeBandaLista nomeBanda bandas
+        save bandas2
+    else return ()
+
+removeBandaLista :: String -> [Banda] -> [Banda]
+removeBandaLista _ [] = []
+removeBandaLista nomeBanda (h : t)
+    | nomeBanda == nome h = removeBandaLista nomeBanda t
+    | otherwise = h : removeBandaLista nomeBanda t
+
+
+
+--publica
+atualizaBanda :: String -> Banda -> IO()
+atualizaBanda nomeBanda bandaNova= do
+    removerBanda nomeBanda
+    salvaBanda bandaNova
+
+
+bandaNula :: IO Banda
+bandaNula = return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+
+--publica
+adicionarInstrumento :: String -> String -> IO Banda
+adicionarInstrumento instrumento nomeBanda 
+    |null instrumento || null nomeBanda = return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+    |otherwise = do
+        let modificado = [instrumento] 
+        existeSera <- existeBanda nomeBanda
+        if existeSera then do
+            banda <- recuperarPorNome nomeBanda
+            atualizaBanda nomeBanda (Banda (nome banda) (composicaoAtual banda) (artistasAnteriores banda) (musicas banda) ((instrumentos banda) ++ modificado) (dataFundacao banda) (genero banda))
+            (recuperarPorNome nomeBanda) >>= return 
+        else return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+
+--publica
+adicionaNovoIntegrante :: String -> String -> IO Banda
+adicionaNovoIntegrante nomeIntegrante nomeBanda
+ |null nomeIntegrante || null nomeBanda = return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+ |otherwise = do
+    let modificado = [nomeIntegrante]
+    existeSera <- existeBanda nomeBanda
+    if existeSera then do
+        banda <- recuperarPorNome nomeBanda
+        atualizaBanda nomeBanda (Banda (nome banda) ((composicaoAtual banda) ++ modificado) (composicaoAtual banda) (musicas banda) (instrumentos banda) (dataFundacao banda) (genero banda))
+        (recuperarPorNome nomeBanda) >>= return
+    else return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+
+--public
+removeIntegrante :: String -> String -> IO Banda
+removeIntegrante nomeIntegrante nomeBanda
+    |null nomeIntegrante || null nomeBanda = return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+    |otherwise = do
+        let modificado = [nomeIntegrante]
+        
+        existeSera <- existeBanda nomeBanda
+        if existeSera then do
+            banda <- recuperarPorNome nomeBanda
+            let modificado2 = (composicaoAtual banda)
+            atualizaBanda nomeBanda (Banda (nome banda) (removeStringLista nomeIntegrante modificado2) (composicaoAtual banda) (musicas banda) (instrumentos banda) (dataFundacao banda) (genero banda))
+            (recuperarPorNome nomeBanda) >>= return
+        else return (Banda "null" ["null","null"] ["null"] ["null"]  ["null"] "null" "null")
+
+removeStringLista :: String -> [String] -> [String]
+removeStringLista nome [] = []
+removeStringLista nome (h : t)
+    |nome == h  = removeStringLista nome t
+    |otherwise = h : removeStringLista nome t

@@ -19,6 +19,26 @@ main = do
     --bandas <- filtrarBandasPorGenero "rock"
     --print bandas
 
-    bandas <- filtrarBandaPorArtista "Jota"
+    --bandas <- filtrarBandaPorArtista "Jota"
 
-    print bandas
+    --print bandas
+
+    --removerBanda "Salvo3"
+
+    --atualizaBanda "Salvo2" (Banda "Salvo3333" ["Eu233","tu233"] ["Eu233"] ["dea2"]  ["violao2"] "12/12/12" "rock2")
+
+    --existe <- existeBanda "Salvo333"
+
+    --print existe
+
+    --banda <- adicionarInstrumento "Guitarra" "Salvo3333"
+
+    --print banda
+
+    --banda <- adicionaNovoIntegrante "NOVOINTEGRANTE" "Salvo3333"
+
+    --print banda
+
+    --banda <- removeIntegrante "NOVOINTEGRANTE" "Salvo3333"
+
+    --print banda
